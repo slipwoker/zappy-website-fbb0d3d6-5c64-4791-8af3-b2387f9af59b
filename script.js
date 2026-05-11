@@ -1537,6 +1537,36 @@ window.onload = function() {
 })();
 
 
+/* Added Component Script */
+/* Subtle entrance animation for verse blocks */
+(function() {
+  if (!('IntersectionObserver' in window)) return;
+
+  var verses = document.querySelectorAll('.song-lyrics-verse');
+  if (!verses.length) return;
+
+  verses.forEach(function(v) {
+    v.style.opacity = '0';
+    v.style.transform = 'translateY(28px)';
+    v.style.transition = 'opacity 0.65s ease, transform 0.65s ease';
+  });
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  verses.forEach(function(v) {
+    observer.observe(v);
+  });
+})();
+
+
 /* ZAPPY_PUBLISHED_LIGHTBOX_RUNTIME */
 (function(){
   try {

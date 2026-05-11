@@ -231,7 +231,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Cookie Consent -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
     <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
     <!-- Mickidum Accessibility Toolbar -->
     <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
@@ -475,7 +475,7 @@
         <!-- Column 1: Company Info -->
         <div class="footer-col footer-col--brand">
           <div class="footer-logo-wrap">
-            <img src="/assets/logo.webp" alt="שירי השיר שלנו" class="logo" />
+            <img src="/assets/logo.webp" alt="שירי השיר שלנו" class="logo" data-element-type="image" data-element-id="img-1778515839040-evv1dtn98" data-zappy-footer-image="true" >
           </div>
           <p class="footer-tagline">ארכיון מוזיקלי מואר —<br>מורשת צלילים, נוסטלגיה, ואמנות חיה.</p>
           <div class="footer-social">
@@ -499,25 +499,21 @@
         <!-- Column 3: Contact -->
         <div class="footer-col">
           <h3 class="footer-heading">יצירת קשר</h3>
-          <ul class="footer-contact">
-            <li>
-              <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+          <ul class="footer-contact" ><li>
+              <span class="contact-icon"><i class="fas fa-envelope" style="cursor: pointer;"></i></span>
               <span class="contact-text"><a href="mailto:[business_email]">[business_email]</a></span>
-            </li>
-            <li>
-              <span class="contact-icon"><i class="fas fa-phone"></i></span>
+            </li><li>
+              <span class="contact-icon"><i class="fas fa-phone" style="cursor: pointer;"></i></span>
               <span class="contact-text"><a href="tel:[business_phone]">[business_phone]</a></span>
-            </li>
-            <li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
-              <span class="contact-text">[business_address]</span></a></li>
-          </ul>
+            </li><li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt" style="cursor: pointer;"></i></span>
+              <span class="contact-text">[business_address]</span></a></li></ul>
         </div>
 
         <!-- Column 4: Decorative / Brand Quote -->
         <div class="footer-col footer-col--quote">
           <div class="footer-quote-block">
-            <span class="footer-quote-mark">“</span>
-            <p class="footer-quote-text">כל שיר הוא פרק בסיפור שלנו — מוזמנים להקשיב.</p>
+            <p class="zappy-editable"><span class="footer-quote-mark">“</span>
+            </p><p class="footer-quote-text">כל שיר הוא פרק בסיפור שלנו — מוזמנים להקשיב.</p>
             <span class="footer-accent-line"></span>
           </div>
         </div>
@@ -543,6 +539,7 @@
   </div>
 </footer>
     <div data-integration="accessibility:toolbar"></div>
+
 
     <script src="/script.js"></script>
 

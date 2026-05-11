@@ -8945,6 +8945,413 @@ div[id*="mic-access-tool-box"] button[class*="reset"] * {
     padding: 6px 12px;
   }
 }
+
+/* AI-generated section */
+/* ===== LYRICS SECTION — רוצה שכבר תבוא ===== */
+
+.lyrics-section {
+  position: relative;
+  background-color: var(--primary, #121417);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(233, 30, 140, 0.13) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(0, 200, 220, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 20% 60%, rgba(233, 30, 140, 0.07) 0%, transparent 55%);
+  padding: 90px 20px 80px;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+  direction: rtl;
+  text-align: center;
+}
+
+/* ===== Background Glow Blobs ===== */
+.lyrics-bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lyrics-bg-glow--pink {
+  width: 420px;
+  height: 420px;
+  top: -80px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(233, 30, 140, 0.18) 0%, transparent 70%);
+  animation: lyrics-float-pink 8s ease-in-out infinite alternate;
+}
+
+.lyrics-bg-glow--cyan {
+  width: 350px;
+  height: 350px;
+  bottom: 40px;
+  left: -80px;
+  background: radial-gradient(circle, rgba(0, 210, 230, 0.12) 0%, transparent 70%);
+  animation: lyrics-float-cyan 10s ease-in-out infinite alternate;
+}
+
+@keyframes lyrics-float-pink {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, 40px) scale(1.08); }
+}
+
+@keyframes lyrics-float-cyan {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-20px, -30px) scale(1.06); }
+}
+
+/* ===== Decorative Background Stars ===== */
+.lyrics-stars-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lyrics-star {
+  position: absolute;
+  color: rgba(233, 30, 140, 0.25);
+  font-size: 14px;
+  animation: lyrics-twinkle 4s ease-in-out infinite alternate;
+}
+
+.lyrics-star--1 { top: 8%;  right: 12%; font-size: 10px; animation-delay: 0s; }
+.lyrics-star--2 { top: 15%; left: 8%;  font-size: 16px; animation-delay: 1.2s; color: rgba(0, 210, 230, 0.2); }
+.lyrics-star--3 { top: 45%; right: 5%; font-size: 12px; animation-delay: 0.6s; }
+.lyrics-star--4 { top: 65%; left: 5%; font-size: 8px;  animation-delay: 2s; color: rgba(0, 210, 230, 0.18); }
+.lyrics-star--5 { bottom: 20%; right: 10%; font-size: 18px; animation-delay: 1.8s; }
+.lyrics-star--6 { bottom: 10%; left: 15%; font-size: 11px; animation-delay: 0.4s; color: rgba(0, 210, 230, 0.22); }
+
+@keyframes lyrics-twinkle {
+  0%   { opacity: 0.3; transform: scale(1); }
+  100% { opacity: 1;   transform: scale(1.3); }
+}
+
+/* ===== Container ===== */
+.lyrics-container {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* ===== Header ===== */
+.lyrics-header {
+  margin-bottom: 56px;
+}
+
+.lyrics-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(233, 30, 140, 0.85);
+  margin: 0 0 14px;
+  font-family: system-ui, sans-serif;
+}
+
+.lyrics-title {
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  font-weight: 800;
+  margin: 0 0 20px;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #ffffff 0%, #ffd6ec 40%, #FF4FA3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-family: system-ui, sans-serif;
+  text-shadow: none;
+  letter-spacing: -0.01em;
+}
+
+.lyrics-title-divider {
+  width: 80px;
+  height: 3px;
+  background: var(--gradient-primary, linear-gradient(135deg, #E91E8C 0%, #C0392B 100%));
+  border-radius: 2px;
+  margin: 0 auto;
+  opacity: 0.9;
+}
+
+/* ===== Lyrics Content ===== */
+.lyrics-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ===== Lyrics Block ===== */
+.lyrics-block {
+  position: relative;
+  padding: 28px 32px 28px 32px;
+  border-radius: 16px;
+  margin-bottom: 4px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lyrics-block:hover {
+  transform: translateY(-2px);
+}
+
+/* Verse block */
+.lyrics-block--verse {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+.lyrics-block--verse:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Chorus block */
+.lyrics-block--chorus {
+  background: rgba(233, 30, 140, 0.07);
+  border: 1px solid rgba(233, 30, 140, 0.22);
+  box-shadow: 0 4px 28px rgba(233, 30, 140, 0.1);
+}
+
+.lyrics-block--chorus:hover {
+  background: rgba(233, 30, 140, 0.1);
+  box-shadow: 0 8px 36px rgba(233, 30, 140, 0.18);
+}
+
+/* Bridge block */
+.lyrics-block--bridge {
+  background: rgba(0, 180, 200, 0.06);
+  border: 1px solid rgba(0, 180, 200, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 180, 200, 0.08);
+}
+
+.lyrics-block--bridge:hover {
+  background: rgba(0, 180, 200, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 180, 200, 0.14);
+}
+
+/* Outro block */
+.lyrics-block--outro {
+  background: linear-gradient(135deg, rgba(233, 30, 140, 0.08) 0%, rgba(192, 57, 43, 0.06) 100%);
+  border: 1px solid rgba(233, 30, 140, 0.28);
+  box-shadow: 0 4px 28px rgba(233, 30, 140, 0.12);
+}
+
+.lyrics-block--outro:hover {
+  box-shadow: 0 8px 40px rgba(233, 30, 140, 0.22);
+}
+
+/* ===== Block Labels ===== */
+.lyrics-block-label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 16px;
+  font-family: system-ui, sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.lyrics-block--chorus .lyrics-block-label {
+  color: rgba(255, 79, 163, 0.7);
+  border-color: rgba(255, 79, 163, 0.25);
+}
+
+.lyrics-block--bridge .lyrics-block-label {
+  color: rgba(0, 210, 230, 0.7);
+  border-color: rgba(0, 210, 230, 0.25);
+}
+
+.lyrics-block--outro .lyrics-block-label {
+  color: rgba(255, 79, 163, 0.75);
+  border-color: rgba(255, 79, 163, 0.28);
+}
+
+/* ===== Lyrics Lines ===== */
+.lyrics-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lyrics-line {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.8vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.88);
+  font-family: system-ui, sans-serif;
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease;
+}
+
+/* Chorus lines */
+.lyrics-line--chorus {
+  font-size: clamp(1.12rem, 3vw, 1.35rem);
+  font-weight: 700;
+  color: #FF4FA3;
+  text-shadow: 0 0 18px rgba(255, 79, 163, 0.35);
+}
+
+/* Bridge lines */
+.lyrics-line--bridge {
+  font-size: clamp(1rem, 2.6vw, 1.18rem);
+  font-weight: 500;
+  color: rgba(0, 225, 240, 0.9);
+  text-shadow: 0 0 14px rgba(0, 200, 220, 0.25);
+}
+
+/* Echo / fading repeat lines */
+.lyrics-line--echo {
+  opacity: 0.6;
+  font-size: 0.9em;
+  letter-spacing: 0.04em;
+}
+
+/* Repeat lines in bridge */
+.lyrics-line--repeat {
+  font-style: italic;
+}
+
+/* Outro chorus lines */
+.lyrics-line--outro-chorus {
+  font-size: clamp(1.1rem, 2.9vw, 1.3rem);
+}
+
+/* Outro verse line */
+.lyrics-block--outro .lyrics-line:not(.lyrics-line--chorus) {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+/* ===== Dividers ===== */
+.lyrics-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 0;
+}
+
+.lyrics-divider-star {
+  font-size: 11px;
+  color: rgba(233, 30, 140, 0.55);
+  animation: lyrics-twinkle 3s ease-in-out infinite alternate;
+}
+
+.lyrics-divider-star:nth-child(3) {
+  animation-delay: 0.5s;
+  font-size: 14px;
+  color: rgba(233, 30, 140, 0.75);
+}
+
+.lyrics-divider-star:nth-child(5) {
+  animation-delay: 1s;
+}
+
+.lyrics-divider-line {
+  display: block;
+  width: 50px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(233, 30, 140, 0.35), transparent);
+  border-radius: 1px;
+}
+
+/* ===== Footer ===== */
+.lyrics-footer {
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.lyrics-footer-star {
+  font-size: 18px;
+  color: rgba(233, 30, 140, 0.5);
+  animation: lyrics-twinkle 4s ease-in-out infinite alternate;
+}
+
+.lyrics-footer-star:nth-child(2) {
+  animation-delay: 0.8s;
+  font-size: 24px;
+  color: rgba(233, 30, 140, 0.7);
+}
+
+.lyrics-footer-star:nth-child(3) {
+  animation-delay: 1.6s;
+}
+
+/* ===== Hover: highlight lines on block hover ===== */
+.lyrics-block--verse:hover .lyrics-line {
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.lyrics-block--bridge:hover .lyrics-line--bridge {
+  color: rgba(0, 235, 250, 1);
+  text-shadow: 0 0 20px rgba(0, 210, 230, 0.4);
+}
+
+.lyrics-block--chorus:hover .lyrics-line--chorus,
+.lyrics-block--outro:hover .lyrics-line--chorus {
+  text-shadow: 0 0 28px rgba(255, 79, 163, 0.55);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .lyrics-section {
+    padding: 60px 16px 60px;
+  }
+
+  .lyrics-block {
+    padding: 22px 20px;
+  }
+
+  .lyrics-title {
+    font-size: clamp(1.9rem, 8vw, 2.8rem);
+  }
+
+  .lyrics-divider-line {
+    width: 30px;
+  }
+
+  .lyrics-header {
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lyrics-section {
+    padding: 48px 12px 48px;
+  }
+
+  .lyrics-block {
+    padding: 18px 16px;
+  }
+
+  .lyrics-line {
+    font-size: 1rem;
+  }
+
+  .lyrics-line--chorus {
+    font-size: 1.08rem;
+  }
+
+  .lyrics-title {
+    font-size: clamp(1.7rem, 9vw, 2.4rem);
+  }
+
+  .lyrics-bg-glow--pink,
+  .lyrics-bg-glow--cyan {
+    width: 220px;
+    height: 220px;
+  }
+
+  .lyrics-divider-line {
+    width: 20px;
+  }
+}
 /* mobile-submenu-overflow-fix */
 @media (max-width: 768px) {
   .navbar .sub-menu.mobile-expanded,

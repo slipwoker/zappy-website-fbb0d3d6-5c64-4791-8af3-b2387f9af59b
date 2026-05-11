@@ -1,0 +1,81 @@
+# שירי השיר שלנו — Generative Engine Optimization Map
+
+> A music-focused website intended to showcase all songs by a band or artist. The site aims to serve as a central hub for the group's musical catalog, presenting their songs in an organized and accessible way.
+
+---
+
+## Pages
+
+### בית
+https://-fbb0d3d6.zappy5.app
+ברוכים הבאים למרכז המוזיקלי של שירי השיר שלנו — המקום שבו כל שיר מספר סיפור. האזינו לשירים נוסטלגיים ישראליים, גלו את הקטלוג המלא ותנו למוזיקה לדבר אליכם.
+
+### ארכיון שירים
+https://-fbb0d3d6.zappy5.app/songs
+ארכיון השירים המלא של שירי השיר שלנו מחכה לכם כאן. עיינו ברשימת השירים המסודרת, מצאו את האהובים עליכם והאזינו לשירים נוסטלגיים ישראליים שיחזירו אתכם לרגעים הכי מיוחדים.
+
+### אודות הלהקה
+https://-fbb0d3d6.zappy5.app/about
+רוצים לדעת מי עומד מאחורי שירי השיר שלנו? הכירו את הלהקה, גלו את הדרך המוזיקלית שעברנו ותבינו מה מניע אותנו ליצור שירים נוסטלגיים ישראליים שנוגעים בנשמה.
+
+### צור קשר
+https://-fbb0d3d6.zappy5.app/contact
+יש לכם שאלה, הצעת שיתוף פעולה או סתם רוצים לשתף אותנו כמה שירי השיר שלנו אהובים עליכם? כתבו לנו עכשיו ונחזור אליכם בהקדם — אנחנו תמיד שמחים לשמוע מכם.
+
+## Legal & Policy
+
+### Privacy Policy
+https://-fbb0d3d6.zappy5.app/privacy
+Information about how user data is collected, stored, and protected.
+
+### Terms & Conditions
+https://-fbb0d3d6.zappy5.app/terms
+Legal terms describing service usage, rights, and policies.
+
+### Accessibility Statement
+https://-fbb0d3d6.zappy5.app/accessibility
+Information about WCAG compliance and accessibility features.
+
+---
+
+## How to Contact Us
+
+- (No contact details configured yet.)
+
+### Contact form
+- URL: https://-fbb0d3d6.zappy5.app/contact
+- Endpoint: https://-fbb0d3d6.zappy5.app/api/email/contact-form
+- Method: POST
+- Content-Type: application/json
+- Fields:
+  - `name` (text, required)
+  - `email` (email, required)
+  - `phone` (tel)
+  - `message` (textarea, required)
+  - `privacy_consent` (checkbox, required)
+
+---
+
+# Business Context (for LLM understanding)
+
+## About שירי השיר שלנו
+A music-focused website intended to showcase all songs by a band or artist. The site aims to serve as a central hub for the group's musical catalog, presenting their songs in an organized and accessible way.
+
+## Services/Products
+- רשימת שירים
+- האזנה לשירים
+
+## Target Audience
+- חובבי מוזיקה נוסטלגית
+- מעריצי הלהקה
+
+## Industry
+מוזיקה ואמנות
+
+---
+
+# Machine-readable feeds
+
+- Sitemap (XML): https://-fbb0d3d6.zappy5.app/sitemap.xml
+- Robots: https://-fbb0d3d6.zappy5.app/robots.txt
+- Flattened page text (for LLMs): https://-fbb0d3d6.zappy5.app/llms-full.txt

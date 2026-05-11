@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>כל השירים במקום אחד — שירי השיר שלנו</title>
+    <meta name="description" content="ארכיון השירים המלא של שירי השיר שלנו מחכה לכם כאן. עיינו ברשימת השירים המסודרת, מצאו את האהובים עליכם והאזינו לשירים נוסטלגיים ישראליים שיחזירו אתכם לרגעים הכי מיוחדים.">
+    <meta name="keywords" content="רשימת שירים, ארכיון שירים, האזנה לשירים, שירים נוסטלגיים ישראליים">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: 'fbb0d3d6-5c64-4791-8af3-b2387f9af59b',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <meta property="og:title" content="כל השירים במקום אחד — שירי השיר שלנו">
+    <meta property="og:description" content="ארכיון השירים המלא של שירי השיר שלנו מחכה לכם כאן. עיינו ברשימת השירים המסודרת, מצאו את האהובים עליכם והאזינו לשירים נוסטלגיים ישראליים שיחזירו אתכם לרגעים הכי מיוחדים.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="כל השירים במקום אחד — שירי השיר שלנו">
+    <meta name="twitter:description" content="ארכיון השירים המלא של שירי השיר שלנו מחכה לכם כאן. עיינו ברשימת השירים המסודרת, מצאו את האהובים עליכם והאזינו לשירים נוסטלגיים ישראליים שיחזירו אתכם לרגעים הכי מיוחדים.">
+    <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+
+  
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: var(--text-dark, #333) !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+      [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 10px !important; padding-right: 28px !important; }
+      .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus (exclude catalog sub-menus that use <a> children instead of <li>) */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))):not(:has(> a)), .sub-menu:not(:has(li)):not(:has(> a)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .navbar .sub-menu.mobile-expanded, .nav-menu .sub-menu.mobile-expanded, #navMenu .sub-menu.mobile-expanded { max-height: none !important; overflow-y: visible !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; position: relative !important; min-height: 44px !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; min-width: 0 !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; min-width: 0 !important; padding: 0 !important; line-height: inherit !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu, .navbar li:has(.sub-menu) > .sub-menu, #navMenu li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: auto !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-light) !important; position: static !important; flex-shrink: 0 !important; align-self: stretch !important; z-index: 2 !important; padding: 0 !important; margin: 0 !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-light) !important; white-space: normal !important; }
+        .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+        [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 0 !important; padding-right: 28px !important; }
+        .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+        .nav-menu.active, #navMenu.active { max-width: 100vw !important; overflow-x: hidden !important; box-sizing: border-box !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-light) !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      html[dir="rtl"] .whatsapp-float { right: 20px !important; left: auto !important; }
+      html[dir="ltr"] .whatsapp-float, html:not([dir]) .whatsapp-float { left: 20px !important; right: auto !important; }
+      html[dir="rtl"] #mic-access-tool-general-button, html[dir="rtl"] .mic-access-tool-general-button,
+      html[dir="rtl"] #mic-init-access-tool .mic-access-tool-general-button,
+      html[dir="rtl"] #mic-init-access-tool #mic-access-tool-general-button,
+      html[dir="rtl"] ._access-icon { left: 20px !important; right: auto !important; }
+      html[dir="ltr"] #mic-access-tool-general-button, html[dir="ltr"] .mic-access-tool-general-button,
+      html[dir="ltr"] #mic-init-access-tool .mic-access-tool-general-button,
+      html[dir="ltr"] #mic-init-access-tool #mic-access-tool-general-button,
+      html[dir="ltr"] ._access-icon,
+      html:not([dir]) #mic-access-tool-general-button, html:not([dir]) .mic-access-tool-general-button,
+      html:not([dir]) #mic-init-access-tool .mic-access-tool-general-button,
+      html:not([dir]) #mic-init-access-tool #mic-access-tool-general-button,
+      html:not([dir]) ._access-icon { right: 20px !important; left: auto !important; }
+      @media (max-width: 768px) { .whatsapp-float { display: flex !important; } }
+      @media (min-width: 769px) { .whatsapp-float { display: flex !important; } }
+      @media (max-width: 768px) {
+        #mic-access-tool-general-button, .mic-access-tool-general-button,
+        #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+        ._access-icon { display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
+        #mic-access-tool-box.opened-mic-access-tool, .mic-access-tool-box.opened-mic-access-tool,
+        #mic-init-access-tool #mic-access-tool-box.opened-mic-access-tool {
+          visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;
+        }
+      }
+      @media (min-width: 769px) {
+        #mic-access-tool-general-button, .mic-access-tool-general-button,
+        #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+        ._access-icon { display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
+        #mic-access-tool-box.opened-mic-access-tool, .mic-access-tool-box.opened-mic-access-tool,
+        #mic-init-access-tool #mic-access-tool-box.opened-mic-access-tool {
+          visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;
+        }
+      }
+    </style>
+</head>
+<body>
+<nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+
+  <button class="phone-header-btn" data-phone="[business_phone]" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+
+  <div class="nav-container">
+    <div class="nav-right-group"><div class="nav-brand">
+      <a href="/" class="logo-link"><img class="logo" src="/assets/site--------------image-1.webp" alt="שירי השיר שלנו"></a>
+    </div><ul class="nav-menu" id="navMenu"><li><a href="/">בית</a></li><li><a href="/songs">ארכיון שירים</a></li><li><a href="/about">אודות הלהקה</a></li></ul></div>
+
+    
+
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+<script>
+
+// Navbar Mobile Menu Toggle and Contrast Fix
+(function() {
+  // Use 'load' event instead of 'DOMContentLoaded' to ensure we run AFTER all other scripts
+  window.addEventListener('load', function() {
+    
+    // FIX MOBILE BUTTON CONTRAST
+    // Detect navbar background color and apply contrasting color to mobile buttons
+    const navbar = document.querySelector('.navbar, nav, header');
+    if (!navbar) {
+      console.log('[Navbar] Navbar element not found');
+      return;
+    }
+    
+    // DECLARE VARIABLES EARLY to avoid Temporal Dead Zone errors
+    // These are used in multiple places below
+    let mobileToggle = document.getElementById('mobileToggle') ||
+                       document.querySelector('.mobile-toggle') ||
+                       document.querySelector('.hamburger') ||
+                       document.querySelector('.hamburger-menu') ||
+                       document.querySelector('.menu-toggle') ||
+                       document.querySelector('.burger-menu') ||
+                       document.querySelector('[aria-label="Menu"]') ||
+                       document.querySelector('[aria-label="תפריט"]');
+    
+    const phoneBtn = document.querySelector('.phone-header-btn');
+    
+    const computedStyle = window.getComputedStyle(navbar);
+    let bgColor = computedStyle.backgroundColor;
+    
+    console.log('[Navbar] Initial navbar background:', bgColor);
+    
+    // Check if background is transparent or rgba with 0 alpha
+    const isTransparent = bgColor === 'transparent' || 
+                         bgColor === 'rgba(0, 0, 0, 0)' ||
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
+    
+    if (isTransparent) {
+      // Check for background-image or gradient
+      const bgImage = computedStyle.backgroundImage;
+      if (bgImage && bgImage !== 'none') {
+        console.log('[Navbar] Navbar has background image/gradient, using dark text');
+        bgColor = 'rgb(240, 240, 240)'; // Assume light background
+      } else {
+        // Transparent navbar - check body background
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        console.log('[Navbar] Navbar transparent, using body background:', bodyBg);
+        bgColor = bodyBg;
+      }
+    }
+    
+    // Calculate luminance to determine if background is light or dark
+    const rgb = bgColor.match(/\d+/g);
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Mobile button colors are set by Claude's AI-generated CSS (same as .nav-menu a)
+      // No dynamic color overrides needed - colors come from the generated navbar CSS
+      console.log('[Navbar] Mobile button colors preserved from Claude CSS (luminance:', luminance.toFixed(2) + ')');
+      
+      // FIX ICON SIZES - Ensure SVGs are properly sized and visible
+      // INJECT CRITICAL CSS TO OVERRIDE ANY CONFLICTING RULES
+      const criticalCSS = document.createElement('style');
+      criticalCSS.id = 'zappy-mobile-nav-fix';
+      const htmlLang = document.documentElement.lang || 'en';
+      const htmlDir = document.documentElement.dir || 'ltr';
+      // Check both dir attribute AND lang for RTL detection
+      // dir="rtl" is the most reliable indicator
+      const isRTL = htmlDir === 'rtl' || htmlLang === 'he' || htmlLang === 'ar';
+      
+      criticalCSS.textContent = `
+        /* Hide mobile buttons on desktop, show only on mobile */
+        @media (min-width: 769px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Show and position mobile buttons correctly on mobile */
+        @media (max-width: 768px) {
+          .navbar,
+          nav.navbar {
+            min-height: 70px !important;
+          }
+
+          .mobile-toggle,
+          .phone-header-btn {
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            margin-top: auto !important;
+            margin-bottom: auto !important;
+            transform: none !important;
+            z-index: 1001 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 6px !important;
+            background: none !important;
+            color: var(--nav-text, var(--text-light)) !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+          }
+
+          html[data-zappy-site-type="ecommerce"] .phone-header-btn,
+          body[data-zappy-site-type="ecommerce"] .phone-header-btn,
+          html[data-zappy-site-type="ecommerce"] header .phone-header-btn,
+          html[data-zappy-site-type="ecommerce"] nav .phone-header-btn {
+            display: none !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+          }
+          
+          /* LTR positioning (default): hamburger LEFT, phone RIGHT */
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .mobile-toggle,
+          html[dir="ltr"] .mobile-toggle {
+            left: 12px !important;
+            right: auto !important;
+          }
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .phone-header-btn,
+          html[dir="ltr"] .phone-header-btn {
+            right: 12px !important;
+            left: auto !important;
+          }
+          
+          /* RTL positioning: hamburger RIGHT, phone LEFT */
+          html[dir="rtl"] .mobile-toggle,
+          html[lang="he"] .mobile-toggle,
+          html[lang="ar"] .mobile-toggle {
+            right: 12px !important;
+            left: auto !important;
+          }
+          html[dir="rtl"] .phone-header-btn,
+          html[lang="he"] .phone-header-btn,
+          html[lang="ar"] .phone-header-btn {
+            left: 12px !important;
+            right: auto !important;
+          }
+          
+          /* CRITICAL: Ensure nav-container has min-height on mobile */
+          /* All children are positioned absolutely/fixed on mobile, so height:auto collapses to 0 */
+          .nav-container {
+            min-height: 70px !important;
+            position: relative !important;
+          }
+          
+          /* Ensure SVG icons are properly sized and inherit color */
+          .mobile-toggle svg,
+          .phone-header-btn svg {
+            width: 24px !important;
+            height: 24px !important;
+            /* Don't force display - let JavaScript control hamburger/close toggle */
+          }
+          
+          /* Reset nav-cta-container on mobile - remove desktop box-shadow/padding */
+          /* that creates a visible ghost box when CTA button is hidden */
+          .nav-cta-container {
+            box-shadow: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Hide nav-cta-container entirely on mobile when there's no lang-switcher */
+          /* (only the CTA button is inside, and it's hidden on mobile) */
+          .nav-cta-container:not(:has(.lang-switcher)) {
+            display: none !important;
+          }
+          
+          /* CRITICAL: Prevent hero image fade gradient from bleeding over headline text */
+          /* The .image-fade-gradient has bottom: -30px (extends below parent) */
+          /* On mobile stacked layout, this overlaps the h1 text below the image */
+          .hero-image-column {
+            overflow: hidden !important;
+          }
+          .image-fade-gradient {
+            bottom: 0 !important;
+          }
+          
+          /* Hide desktop language switcher on mobile - hamburger menu handles it */
+          /* High specificity to override stored CSS */
+          .lang-switcher,
+          .nav-cta-container .lang-switcher,
+          .nav-container .lang-switcher,
+          .navbar .lang-switcher,
+          .navbar .nav-cta-container .lang-switcher {
+            display: none !important;
+          }
+        }
+      `;
+      
+      // Remove existing fix if present and inject new one
+      const existing = document.getElementById('zappy-mobile-nav-fix');
+      if (existing) existing.remove();
+      document.head.appendChild(criticalCSS);
+      
+      console.log('[Navbar] Critical CSS injected for mobile nav positioning');
+      
+      // ONLY apply inline positioning styles on mobile viewport
+      // On desktop, the CSS handles hiding these buttons with display: none
+      // Inline styles were breaking desktop layout by overriding CSS
+      const isMobileViewport = window.innerWidth <= 768;
+      
+      if (mobileToggle) {
+        // Icon sizing applies to all viewports for consistency
+        const hamburgerIcon = mobileToggle.querySelector('.hamburger-icon');
+        const closeIcon = mobileToggle.querySelector('.close-icon');
+        
+        if (hamburgerIcon) {
+          hamburgerIcon.style.setProperty('width', '24px', 'important');
+          hamburgerIcon.style.setProperty('height', '24px', 'important');
+          hamburgerIcon.style.setProperty('display', 'block', 'important'); // Show hamburger by default
+        }
+        if (closeIcon) {
+          closeIcon.style.setProperty('width', '24px', 'important');
+          closeIcon.style.setProperty('height', '24px', 'important');
+          closeIcon.style.setProperty('display', 'none', 'important'); // Hide close icon by default
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          mobileToggle.style.setProperty('position', 'absolute', 'important');
+          mobileToggle.style.setProperty('top', '0', 'important');
+          mobileToggle.style.setProperty('bottom', '0', 'important');
+          mobileToggle.style.setProperty('margin-top', 'auto', 'important');
+          mobileToggle.style.setProperty('margin-bottom', 'auto', 'important');
+          mobileToggle.style.setProperty('transform', 'none', 'important');
+          mobileToggle.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          
+          console.log('[Navbar] Mobile toggle positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          mobileToggle.style.removeProperty('position');
+          mobileToggle.style.removeProperty('top');
+          mobileToggle.style.removeProperty('transform');
+          mobileToggle.style.removeProperty('z-index');
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared mobile toggle inline positioning');
+        }
+      }
+      
+      if (phoneBtn) {
+        // Icon sizing applies to all viewports
+        const phoneIcon = phoneBtn.querySelector('svg');
+        if (phoneIcon) {
+          phoneIcon.style.width = '24px';
+          phoneIcon.style.height = '24px';
+          phoneIcon.setAttribute('width', '24');
+          phoneIcon.setAttribute('height', '24');
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          phoneBtn.style.setProperty('position', 'absolute', 'important');
+          phoneBtn.style.setProperty('top', '0', 'important');
+          phoneBtn.style.setProperty('bottom', '0', 'important');
+          phoneBtn.style.setProperty('margin-top', 'auto', 'important');
+          phoneBtn.style.setProperty('margin-bottom', 'auto', 'important');
+          phoneBtn.style.setProperty('transform', 'none', 'important');
+          phoneBtn.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          
+          console.log('[Navbar] Phone button positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          phoneBtn.style.removeProperty('position');
+          phoneBtn.style.removeProperty('top');
+          phoneBtn.style.removeProperty('transform');
+          phoneBtn.style.removeProperty('z-index');
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared phone button inline positioning');
+        }
+      }
+    } else {
+      console.log('[Navbar] Could not parse background color:', bgColor);
+    }
+    
+    // MOBILE MENU TOGGLE
+    // Re-query in case DOM changed (mobileToggle already declared at top of function)
+    mobileToggle = document.getElementById('mobileToggle') ||
+                   document.querySelector('.mobile-toggle') ||
+                   document.querySelector('.hamburger') ||
+                   document.querySelector('.hamburger-menu') ||
+                   document.querySelector('.menu-toggle') ||
+                   document.querySelector('.burger-menu') ||
+                   document.querySelector('[aria-label="Menu"]') ||
+                   document.querySelector('[aria-label="תפריט"]');
+    
+    // EXPANDED SEARCH: Find nav menu by ID or class
+    const navMenu = document.getElementById('navMenu') ||
+                  document.querySelector('.nav-menu') ||
+                  document.querySelector('.nav-links') ||
+                  document.querySelector('nav ul:not(.submenu)');
+    
+    if (!mobileToggle || !navMenu) {
+      console.log('[Navbar] Mobile toggle or menu not found:', { toggle: !!mobileToggle, menu: !!navMenu });
+      return;
+    }
+    
+    // Ensure navMenu has ID for CSS targeting
+    if (!navMenu.id) {
+      navMenu.id = 'navMenu';
+    }
+    
+    console.log('[Navbar] Initializing mobile menu...');
+    
+    // Remove any existing event listeners by cloning the button
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    
+    // Toggle menu handler (shared by click and touchend)
+    function handleToggle(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+      const closeIcon = newToggle.querySelector('.close-icon');
+      const isActive = navMenu.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed');
+      } else {
+        // Open menu
+        navMenu.classList.add('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'none', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'block', 'important');
+        document.body.style.overflow = 'hidden';
+        console.log('[Navbar] Menu opened');
+      }
+    }
+    
+    // Use click for desktop/emulation and touchend as iOS Safari fallback.
+    // Prevent double-fire with a timestamp guard.
+    var lastToggleTime = 0;
+    function guardedToggle(e) {
+      var now = Date.now();
+      if (now - lastToggleTime < 300) return;
+      lastToggleTime = now;
+      handleToggle(e);
+    }
+    
+    newToggle.addEventListener('click', guardedToggle);
+    newToggle.addEventListener('touchend', guardedToggle);
+    
+    // Close menu when clicking nav links (but NOT dropdown toggles)
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        // Don't close if it's a dropdown child (unless it's a real navigation link)
+        if (this.getAttribute('href') === '#') return;
+        
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed (link clicked)');
+      });
+    });
+    
+    // DROPDOWN MENU TOGGLE (for mobile and touch devices)
+    var dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var parent = this.closest('.nav-dropdown');
+        if (!parent) return;
+        
+        // Close other open dropdowns at the same level
+        var siblings = parent.parentNode.querySelectorAll('.nav-dropdown.open');
+        siblings.forEach(function(sib) {
+          if (sib !== parent) sib.classList.remove('open');
+        });
+        
+        parent.classList.toggle('open');
+        console.log('[Navbar] Dropdown toggled:', parent.classList.contains('open') ? 'open' : 'closed');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        var openDropdowns = document.querySelectorAll('.nav-dropdown.open');
+        openDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
+      }
+    });
+    
+    console.log('[Navbar] Dropdown handlers initialized for ' + dropdownToggles.length + ' dropdowns');
+    
+    // Phone button functionality (phoneBtn already declared at top of function)
+    if (phoneBtn) {
+      phoneBtn.addEventListener('click', function() {
+        // Get phone number from placeholder in page or use default
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        const phoneNumber = phoneLinks.length > 0 
+          ? phoneLinks[0].getAttribute('href').replace('tel:', '')
+          : '[business_phone]';
+        
+        window.location.href = 'tel:' + phoneNumber;
+        console.log('[Navbar] Phone button clicked');
+      });
+    }
+    
+    console.log('[Navbar] Mobile menu initialized successfully');
+    
+    // WhatsApp button visibility is now controlled via CSS (siteSettings).
+    // No JS-based desktop hiding — the button is visible on both mobile and desktop by default.
+  });
+})();
+
+</script>
+  
+  <main>
+    <section class="songs-intro-section" data-layout-spec="ארכיון שירים-intro" dir="rtl">
+  <!-- Waveform background decoration -->
+  <div class="songs-intro-waveform" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1280 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="0,40 40,28 80,52 120,20 160,55 200,30 240,45 280,18 320,50 360,32 400,48 440,22 480,58 520,28 560,42 600,16 640,52 680,30 720,46 760,20 800,54 840,28 880,44 920,18 960,50 1000,34 1040,48 1080,24 1120,56 1160,30 1200,44 1240,20 1280,40" fill="none" stroke="rgba(39,216,255,0.12)" stroke-width="1.5"></polyline>
+    </svg>
+  </div>
+
+  <!-- Gold sparkle decorations -->
+  <span class="songs-intro-sparkle songs-intro-sparkle--1" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 0 L7.8 5.5 L13 7 L7.8 8.5 L7 14 L6.2 8.5 L1 7 L6.2 5.5 Z" fill="rgba(212,175,55,0.85)"></path>
+    </svg>
+  </span>
+  <span class="songs-intro-sparkle songs-intro-sparkle--2" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" width="10" height="10" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 0 L7.8 5.5 L13 7 L7.8 8.5 L7 14 L6.2 8.5 L1 7 L6.2 5.5 Z" fill="rgba(212,175,55,0.6)"></path>
+    </svg>
+  </span>
+
+  <div class="songs-intro-container">
+
+    <!-- Top cyan separator -->
+    <div class="songs-intro-separator songs-intro-separator--top" aria-hidden="true"></div>
+
+    <!-- Main content block -->
+    <div class="songs-intro-content">
+
+      <p class="songs-intro-eyebrow">ארכיון מוזיקלי מלא</p>
+
+      <h1 class="songs-intro-heading">שירי השיר שלנו</h1>
+
+      <p class="songs-intro-description">
+        כאן תמצאו את כל שירי הלהקה — מהרגעים הראשונים ועד ליצירות האחרונות. כל שיר, כל מנגינה, כל מילה — מאורגנים ומוצגים במקום אחד נגיש ואוהב.
+      </p>
+
+      <!-- Metadata line -->
+      <div class="songs-intro-meta">
+        <span class="songs-intro-meta-item">
+          <svg data-element-type="icon" data-icon-type="svg" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"></circle>
+            <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+          </svg>
+          ארכיון שלם ומעודכן
+        </span>
+        <span class="songs-intro-meta-dot" aria-hidden="true"></span>
+        <span class="songs-intro-meta-item">
+          <svg data-element-type="icon" data-icon-type="svg" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.5"></circle>
+            <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.5"></circle>
+          </svg>
+          רשימת שירים מלאה
+        </span>
+        <span class="songs-intro-meta-dot" aria-hidden="true"></span>
+        <span class="songs-intro-meta-item">
+          <svg data-element-type="icon" data-icon-type="svg" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"></rect>
+          </svg>
+          מאורגן לפי עידנים ואלבומים
+        </span>
+      </div>
+    </div>
+
+    <!-- Bottom cyan separator -->
+    <div class="songs-intro-separator songs-intro-separator--bottom" aria-hidden="true"></div>
+
+    <!-- Era / Category Chips Row -->
+    <div class="songs-intro-chips" role="list" aria-label="קטגוריות ארכיון">
+      <div class="songs-intro-chip" role="listitem">
+        <span class="songs-intro-chip-dot" aria-hidden="true"></span>
+        <span class="songs-intro-chip-label">שירים ראשונים</span>
+      </div>
+      <div class="songs-intro-chip" role="listitem">
+        <span class="songs-intro-chip-dot songs-intro-chip-dot--accent" aria-hidden="true"></span>
+        <span class="songs-intro-chip-label">להיטי חתימה</span>
+      </div>
+      <div class="songs-intro-chip" role="listitem">
+        <span class="songs-intro-chip-dot songs-intro-chip-dot--secondary" aria-hidden="true"></span>
+        <span class="songs-intro-chip-label">בלדות ורגשות</span>
+      </div>
+      <div class="songs-intro-chip" role="listitem">
+        <span class="songs-intro-chip-dot songs-intro-chip-dot--gold" aria-hidden="true"></span>
+        <span class="songs-intro-chip-label">אהובי הקהל</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="songs-track-list-section" data-layout-spec="ארכיון שירים-track-list" dir="rtl">
+  <div class="songs-track-list-container">
+
+    <!-- Section Header -->
+    <div class="songs-track-list-header">
+      <span class="songs-track-list-eyebrow">ארכיון מוזיקלי</span>
+      <h2 class="songs-track-list-title">כל שירי השיר שלנו</h2>
+      <p class="songs-track-list-subtitle">רשימת שירים מלאה — מהראשון ועד האחרון, כל אחד עם הסיפור שלו</p>
+    </div>
+
+    <!-- Album Block 1 -->
+    <article class="songs-album-block">
+      <div class="songs-album-header">
+        <div class="songs-album-meta-row">
+          <span class="songs-album-year">2024</span>
+          <span class="songs-album-dot" aria-hidden="true">·</span>
+          <span class="songs-album-type">אלבום שלישי</span>
+        </div>
+        <h2 class="songs-album-title">אור בחשכה</h2>
+        <div class="songs-album-divider" aria-hidden="true"></div>
+      </div>
+      <div class="songs-track-grid">
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">01</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">פתיחה לאור</h3>
+              <p class="songs-track-note">שיר הפתיחה של האלבום — נגינה אינסטרומנטלית עם כינור ופסנתר</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">3:42</span>
+            <span class="songs-track-tag">אינסטרומנטל</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">02</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">בין הכוכבים</h3>
+              <p class="songs-track-note">שיר אהבה רומנטי שהפך ללהיט הגדול של השנה</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">4:15</span>
+            <span class="songs-track-tag songs-track-tag--accent">סינגל</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">03</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">גשם בלילה</h3>
+              <p class="songs-track-note">מלנכוליה עירונית — נכתב בלילה אחד של חורף בתל אביב</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">3:58</span>
+            <span class="songs-track-tag">בלד</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">04</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">ריקוד אחרון</h3>
+              <p class="songs-track-note">שיר מחול עם השפעות ג'אז — מוקדש לדור הישן</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">4:33</span>
+            <span class="songs-track-tag">ג'אז</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">05</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">שיר הנדודים</h3>
+              <p class="songs-track-note">מסע מוזיקלי — שיר על הגעגוע לבית ולשורשים</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">5:01</span>
+            <span class="songs-track-tag">פולק</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">06</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">סוף הקיץ</h3>
+              <p class="songs-track-note">שיר הסיום — נגמר עם שתיקה ארוכה ומכוונת</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">6:22</span>
+            <span class="songs-track-tag">אאוטרו</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Album Block 2 -->
+    <article class="songs-album-block">
+      <div class="songs-album-header">
+        <div class="songs-album-meta-row">
+          <span class="songs-album-year">2021</span>
+          <span class="songs-album-dot" aria-hidden="true">·</span>
+          <span class="songs-album-type">אלבום שני</span>
+        </div>
+        <h2 class="songs-album-title">זמן אחר</h2>
+        <div class="songs-album-divider" aria-hidden="true"></div>
+      </div>
+      <div class="songs-track-grid">
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">01</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">התחלה חדשה</h3>
+              <p class="songs-track-note">שיר פתיחה אופטימי — מלא תקווה ואנרגיה חדשה</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">3:21</span>
+            <span class="songs-track-tag">פופ</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">02</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">לב פתוח</h3>
+              <p class="songs-track-note">שיר אינטימי — הוקלט בסשן אחד ללא עריכה</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">4:07</span>
+            <span class="songs-track-tag songs-track-tag--accent">סינגל</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">03</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">עיר של חלומות</h3>
+              <p class="songs-track-note">הימנון עירוני — נוסטלגיה ישראלית מהסוג הטוב</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">4:44</span>
+            <span class="songs-track-tag">רוק</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">04</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">מחר בבוקר</h3>
+              <p class="songs-track-note">שיר על המתנה — שקט, מינימליסטי ועמוק</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">3:55</span>
+            <span class="songs-track-tag">אקוסטי</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">05</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">שני צדדים</h3>
+              <p class="songs-track-note">דואט — שיר על מערכת יחסים מורכבת עם שני קולות</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">5:18</span>
+            <span class="songs-track-tag">דואט</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">06</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">הדרך הביתה</h3>
+              <p class="songs-track-note">שיר מסיים — ניחוח של געגועים ושלמות</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">4:50</span>
+            <span class="songs-track-tag">בלד</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">07</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">זמן אחר <span class="songs-track-bonus">(גרסה אקוסטית)</span></h3>
+              <p class="songs-track-note">בונוס טראק — הוקלט לייב בסטודיו ללא עריכה</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">5:37</span>
+            <span class="songs-track-tag">בונוס</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Album Block 3 -->
+    <article class="songs-album-block">
+      <div class="songs-album-header">
+        <div class="songs-album-meta-row">
+          <span class="songs-album-year">2018</span>
+          <span class="songs-album-dot" aria-hidden="true">·</span>
+          <span class="songs-album-type">אלבום ראשון</span>
+        </div>
+        <h2 class="songs-album-title">שירי השיר שלנו</h2>
+        <div class="songs-album-divider" aria-hidden="true"></div>
+      </div>
+      <div class="songs-track-grid">
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">01</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">שיר ראשון</h3>
+              <p class="songs-track-note">ההתחלה של הכל — שיר שנכתב בגיל שבע עשרה</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">3:10</span>
+            <span class="songs-track-tag">פופ</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">02</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">ילדות</h3>
+              <p class="songs-track-note">שיר נוסטלגי על ימי הילדות — שירים נוסטלגיים ישראליים ביסודם</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">3:48</span>
+            <span class="songs-track-tag songs-track-tag--accent">סינגל</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">03</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">אמא</h3>
+              <p class="songs-track-note">שיר מוקדש — נכתב ביום ההולדת של האם</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">4:22</span>
+            <span class="songs-track-tag">בלד</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">04</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">חופש</h3>
+              <p class="songs-track-note">שיר קיץ — אנרגטי, שמח ומלא חיים</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">3:30</span>
+            <span class="songs-track-tag">פופ</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">05</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">לילה לבן</h3>
+              <p class="songs-track-note">שיר על נדודי שינה — כתוב בשלוש בלילה</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">4:05</span>
+            <span class="songs-track-tag">אינדי</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">06</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">שלום לעולם</h3>
+              <p class="songs-track-note">שיר פרידה — נגמר האלבום הראשון בשקט ובכבוד</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">5:14</span>
+            <span class="songs-track-tag">אאוטרו</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Singles Block -->
+    <article class="songs-album-block">
+      <div class="songs-album-header">
+        <div class="songs-album-meta-row">
+          <span class="songs-album-year">2018–2024</span>
+          <span class="songs-album-dot" aria-hidden="true">·</span>
+          <span class="songs-album-type">סינגלים ומיוחדים</span>
+        </div>
+        <h2 class="songs-album-title">מחוץ לאלבום</h2>
+        <div class="songs-album-divider" aria-hidden="true"></div>
+      </div>
+      <div class="songs-track-grid">
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">—</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">שיר לחג</h3>
+              <p class="songs-track-note">שוחרר לחנוכה 2019 — שיר חגיגי מיוחד</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">3:05</span>
+            <span class="songs-track-tag">2019</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">—</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">ביחד</h3>
+              <p class="songs-track-note">שיר שנכתב בתקופת הסגר — על חוסן ועל אחדות</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">4:18</span>
+            <span class="songs-track-tag">2020</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">—</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">קול בלב</h3>
+              <p class="songs-track-note">שיר שנוצר עם מוזיקאים אורחים מכל הארץ</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">3:52</span>
+            <span class="songs-track-tag">2022</span>
+          </div>
+        </div>
+        <div class="songs-track-row">
+          <div class="songs-track-start">
+            <span class="songs-track-num">—</span>
+            <div class="songs-track-info">
+              <h3 class="songs-track-name">נגינה לשמה</h3>
+              <p class="songs-track-note">הקלטה לייב מהופעה בכיכר הבימה — ללא עריכה</p>
+            </div>
+          </div>
+          <div class="songs-track-end">
+            <span class="songs-track-duration">7:30</span>
+            <span class="songs-track-tag">2023 · לייב</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- Decorative ambient glow -->
+  <div class="songs-track-list-glow songs-track-list-glow--cyan" aria-hidden="true"></div>
+  <div class="songs-track-list-glow songs-track-list-glow--magenta" aria-hidden="true"></div>
+</section>
+
+<section class="songs-gallery-section" data-layout-spec="ארכיון שירים-gallery" dir="rtl">
+  <div class="songs-gallery-container">
+
+    <!-- Section Header -->
+    <div class="songs-gallery-header">
+      <div class="songs-gallery-eyebrow">
+        <span class="songs-gallery-line"></span>
+        <span class="songs-gallery-label">ויזואל ארכיון</span>
+        <span class="songs-gallery-line"></span>
+      </div>
+      <h2 class="songs-gallery-title">רגעים שצולמו,<br>שירים שנשארו</h2>
+      <p class="songs-gallery-subtitle">תמונות ממסעות, הופעות ואלבומים — ארכיון ויזואלי של שירי השיר שלנו לאורך השנים</p>
+    </div>
+
+    <!-- Asymmetric Gallery Grid -->
+    <div class="songs-gallery-grid">
+
+      <!-- Tile 1: Large hero tile -->
+      <article class="songs-gallery-tile songs-gallery-tile--large">
+        <div class="songs-gallery-img-wrap">
+          <img data-placeholder="songs-gallery-image-1" data-context="Black and white dramatic band portrait, Israeli music group posed under a single spotlight on a dark stage, cinematic moody atmosphere, film grain texture, high contrast monochrome photography" width="700" height="900" src="/assets/site-songs-gallery-image-1.webp" alt="תמונת להקה דרמטית בשחור לבן על במה">
+          <div class="songs-gallery-img-overlay"></div>
+          <div class="songs-gallery-neon-border"></div>
+        </div>
+        <figcaption class="songs-gallery-caption">
+          <span class="songs-gallery-era">2018 — הופעת הבכורה</span>
+          <span class="songs-gallery-caption-title">הלילה הראשון</span>
+        </figcaption>
+      </article>
+
+      <!-- Right column: stacked smaller tiles -->
+      <div class="songs-gallery-column">
+
+        <!-- Tile 2: Portrait small -->
+        <article class="songs-gallery-tile songs-gallery-tile--portrait">
+          <div class="songs-gallery-img-wrap">
+            <img data-placeholder="songs-gallery-image-2" data-context="Black and white close-up of musician hands playing guitar strings, intimate studio session, bokeh background, moody dark atmosphere, selective neon cyan edge glow effect" width="400" height="320" src="/assets/site-songs-gallery-image-2.webp" alt="ידיים מנגנות גיטרה בסטודיו">
+            <div class="songs-gallery-img-overlay"></div>
+          </div>
+          <figcaption class="songs-gallery-caption">
+            <span class="songs-gallery-era">2020 — סטודיו</span>
+            <span class="songs-gallery-caption-title">מאחורי הקלעים</span>
+          </figcaption>
+        </article>
+
+        <!-- Tile 3: Square small -->
+        <article class="songs-gallery-tile songs-gallery-tile--square">
+          <div class="songs-gallery-img-wrap">
+            <img data-placeholder="songs-gallery-image-3" data-context="Black and white album cover artwork, abstract geometric shapes with vinyl record silhouette, neon pink magenta glow edge effect, dark background, Israeli music band discography aesthetic" width="400" height="320" src="/assets/site-songs-gallery-image-3.webp" alt="עטיפת אלבום בשחור לבן עם זוהר ניאון">
+            <div class="songs-gallery-img-overlay"></div>
+            <div class="songs-gallery-neon-accent songs-gallery-neon-accent--pink"></div>
+          </div>
+          <figcaption class="songs-gallery-caption">
+            <span class="songs-gallery-era">2021 — אלבום שני</span>
+            <span class="songs-gallery-caption-title">בין הגלים</span>
+          </figcaption>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- Lower row: three smaller tiles -->
+    <div class="songs-gallery-row">
+
+      <!-- Tile 4: Landscape wide -->
+      <article class="songs-gallery-tile songs-gallery-tile--wide">
+        <div class="songs-gallery-img-wrap">
+          <img data-placeholder="songs-gallery-image-4" data-context="Black and white panoramic concert crowd shot, thousands of audience members with hands raised, stage lights cutting through smoke, emotional live performance atmosphere, Israeli music event" width="700" height="380" src="/assets/site-songs-gallery-image-4.webp" alt="קהל בהופעה חיה בשחור לבן">
+          <div class="songs-gallery-img-overlay"></div>
+        </div>
+        <figcaption class="songs-gallery-caption">
+          <span class="songs-gallery-era">2022 — סיבוב הופעות</span>
+          <span class="songs-gallery-caption-title">אלפי קולות, שיר אחד</span>
+        </figcaption>
+      </article>
+
+      <!-- Tile 5: Square -->
+      <article class="songs-gallery-tile songs-gallery-tile--square">
+        <div class="songs-gallery-img-wrap">
+          <img data-placeholder="songs-gallery-image-5" data-context="Black and white behind the scenes band photo, musicians laughing and talking backstage, candid intimate moment, film grain, dark moody lighting, selective neon cyan glow on edges" width="380" height="380" src="/assets/site-songs-gallery-image-5.webp" alt="רגע מאחורי הקלעים של חברי הלהקה">
+          <div class="songs-gallery-img-overlay"></div>
+        </div>
+        <figcaption class="songs-gallery-caption">
+          <span class="songs-gallery-era">2019 — גלריה פרטית</span>
+          <span class="songs-gallery-caption-title">בין שיר לשיר</span>
+        </figcaption>
+      </article>
+
+      <!-- Tile 6: Portrait small -->
+      <article class="songs-gallery-tile songs-gallery-tile--portrait-sm">
+        <div class="songs-gallery-img-wrap">
+          <img data-placeholder="songs-gallery-image-6" data-context="Black and white portrait of lead vocalist singing passionately into microphone, dramatic stage lighting, strong shadows, neon pink magenta edge glow, cinematic music photography" width="300" height="420" src="/assets/site-songs-gallery-image-6.webp" alt="הזמרת הראשית שרה על הבמה">
+          <div class="songs-gallery-img-overlay"></div>
+          <div class="songs-gallery-neon-accent songs-gallery-neon-accent--cyan"></div>
+        </div>
+        <figcaption class="songs-gallery-caption">
+          <span class="songs-gallery-era">2023 — הופעת יובל</span>
+          <span class="songs-gallery-caption-title">קול מן הנשמה</span>
+        </figcaption>
+      </article>
+
+    </div>
+
+    <!-- Decorative divider line -->
+    <div class="songs-gallery-divider" aria-hidden="true"></div>
+
+    <!-- Bottom CTA -->
+    <div class="songs-gallery-cta">
+      <p class="songs-gallery-cta-text">רוצים לחוות את השירים הנוסטלגיים הישראליים שלנו מקרוב?</p>
+      <a href="/contact" class="songs-gallery-btn">צרו קשר</a>
+    </div>
+
+  </div>
+
+  <!-- Decorative ambient glow blobs -->
+  <div class="songs-gallery-glow songs-gallery-glow--cyan" aria-hidden="true"></div>
+  <div class="songs-gallery-glow songs-gallery-glow--pink" aria-hidden="true"></div>
+
+</section>
+
+<section class="songs-highlights-section" data-layout-spec="ארכיון שירים-highlights" dir="rtl">
+  <div class="songs-highlights-container">
+    <div class="songs-highlights-header">
+      <span class="songs-highlights-eyebrow">מסלולי האזנה</span>
+      <h2 class="songs-highlights-title">שירי השיר שלנו — נתיבי כניסה לעולמנו</h2>
+      <div class="songs-highlights-divider-line"></div>
+    </div>
+    <div class="songs-highlights-grid">
+
+      <!-- Card 1: Essential Songs -->
+      <article class="songs-highlight-card">
+        <div class="songs-highlight-card-inner">
+          <div class="songs-highlight-icon-wrap">
+            <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M14 3L16.8 9.7L24 10.6L18.9 15.5L20.3 22.7L14 19.2L7.7 22.7L9.1 15.5L4 10.6L11.2 9.7L14 3Z" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round" fill="none"></path>
+            </svg>
+          </div>
+          <div class="songs-highlight-card-content">
+            <h3 class="songs-highlight-card-title">שירים חיוניים</h3>
+            <div class="songs-highlight-gold-rule"></div>
+            <p class="songs-highlight-card-desc">המקום הטוב ביותר להתחיל — אוסף השירים שעיצבו את הזהות המוזיקלית שלנו. כל שיר ברשימה זו הוא אבן דרך שאי אפשר לדלג עליה, ייצוג מדויק של הלב הפועם של הלהקה.</p>
+            <ul class="songs-highlight-list">
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">אנחנו הים</span>
+                <span class="songs-highlight-song-year">2018</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">רגע אחד</span>
+                <span class="songs-highlight-song-year">2019</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">בין הכוכבים</span>
+                <span class="songs-highlight-song-year">2020</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">שיר הפתיחה</span>
+                <span class="songs-highlight-song-year">2021</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">לאן שתלך</span>
+                <span class="songs-highlight-song-year">2022</span>
+              </li>
+            </ul>
+            <a href="/songs" class="songs-highlight-card-cta">לרשימת השירים <span aria-hidden="true">←</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2: Quiet Emotional Songs -->
+      <article class="songs-highlight-card">
+        <div class="songs-highlight-card-inner">
+          <div class="songs-highlight-icon-wrap">
+            <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M14 22C14 22 5 16.5 5 10.5C5 7.46 7.46 5 10.5 5C12.24 5 13.79 5.8 14 6C14.21 5.8 15.76 5 17.5 5C20.54 5 23 7.46 23 10.5C23 16.5 14 22 14 22Z" stroke="var(--secondary)" stroke-width="1.5" fill="none"></path>
+            </svg>
+          </div>
+          <div class="songs-highlight-card-content">
+            <h3 class="songs-highlight-card-title">שירים שקטים ורגשיים</h3>
+            <div class="songs-highlight-gold-rule"></div>
+            <p class="songs-highlight-card-desc">שירים שנולדו ברגעים שקטים — בלילה, בבדידות, בין מילים שלא נאמרו. אוסף אינטימי שמזמין האזנה עמוקה, ומגלה שכאב ויופי יכולים לחיות באותה נשימה.</p>
+            <ul class="songs-highlight-list">
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--pink" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">שקט של לילה</span>
+                <span class="songs-highlight-song-year">2017</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--pink" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">מכתב שלא נשלח</span>
+                <span class="songs-highlight-song-year">2019</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--pink" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">בלי מילים</span>
+                <span class="songs-highlight-song-year">2020</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--pink" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">נשימה אחת</span>
+                <span class="songs-highlight-song-year">2021</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--pink" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">זיכרון קטן</span>
+                <span class="songs-highlight-song-year">2023</span>
+              </li>
+            </ul>
+            <a href="/songs" class="songs-highlight-card-cta songs-highlight-card-cta--pink">לרשימת השירים <span aria-hidden="true">←</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3: Nostalgic Crowd Favorites -->
+      <article class="songs-highlight-card">
+        <div class="songs-highlight-card-inner">
+          <div class="songs-highlight-icon-wrap">
+            <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="14" cy="14" r="9" stroke="#D4AF37" stroke-width="1.5" fill="none"></circle>
+              <circle cx="14" cy="14" r="2.5" stroke="#D4AF37" stroke-width="1.5" fill="none"></circle>
+              <line x1="14" y1="5" x2="14" y2="8" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"></line>
+              <line x1="14" y1="20" x2="14" y2="23" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"></line>
+              <line x1="5" y1="14" x2="8" y2="14" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"></line>
+              <line x1="20" y1="14" x2="23" y2="14" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"></line>
+            </svg>
+          </div>
+          <div class="songs-highlight-card-content">
+            <h3 class="songs-highlight-card-title">אהובי הקהל הנוסטלגיים</h3>
+            <div class="songs-highlight-gold-rule songs-highlight-gold-rule--gold"></div>
+            <p class="songs-highlight-card-desc">שירים ישראליים נוסטלגיים שהפכו לחלק מהזיכרון הקולקטיבי — הנוכחים תמיד בהופעות, מושרים בקהל בקול אחד. כל שיר ברשימה הזו הוא גשר בין הבמה לקהל.</p>
+            <ul class="songs-highlight-list">
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--gold" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">ימי הקיץ</span>
+                <span class="songs-highlight-song-year">2016</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--gold" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">כולנו ביחד</span>
+                <span class="songs-highlight-song-year">2017</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--gold" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">הבית שלנו</span>
+                <span class="songs-highlight-song-year">2018</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--gold" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">שיר הסיום</span>
+                <span class="songs-highlight-song-year">2019</span>
+              </li>
+              <li class="songs-highlight-list-item">
+                <span class="songs-highlight-list-dot songs-highlight-list-dot--gold" aria-hidden="true"></span>
+                <span class="songs-highlight-song-title">לנצח יחד</span>
+                <span class="songs-highlight-song-year">2022</span>
+              </li>
+            </ul>
+            <a href="/songs" class="songs-highlight-card-cta songs-highlight-card-cta--gold">לרשימת השירים <span aria-hidden="true">←</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- Decorative gold sparkle accent -->
+  <svg class="songs-highlights-sparkle-tl" data-no-icon-edit="true" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 0L9.2 6.8L16 8L9.2 9.2L8 16L6.8 9.2L0 8L6.8 6.8L8 0Z" fill="#D4AF37" opacity="0.9"></path>
+  </svg>
+  <svg class="songs-highlights-sparkle-br" data-no-icon-edit="true" aria-hidden="true" width="10" height="10" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 0L9.2 6.8L16 8L9.2 9.2L8 16L6.8 9.2L0 8L6.8 6.8L8 0Z" fill="#D4AF37" opacity="0.6"></path>
+  </svg>
+</section>
+  </main>
+  
+  <footer class="site-footer" dir="rtl">
+  <div class="footer-top">
+    <div class="footer-container">
+      <div class="footer-grid">
+
+        <!-- Column 1: Company Info -->
+        <div class="footer-col footer-col--brand">
+          <div class="footer-logo-wrap">
+            <img src="/assets/logo.webp" alt="שירי השיר שלנו" class="logo" />
+          </div>
+          <p class="footer-tagline">ארכיון מוזיקלי מואר —<br>מורשת צלילים, נוסטלגיה, ואמנות חיה.</p>
+          <div class="footer-social">
+            
+            
+            
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+          <h3 class="footer-heading">ניווט מהיר</h3>
+          <ul class="footer-links">
+            <li><a href="/">בית</a></li>
+            <li><a href="/songs">ארכיון שירים</a></li>
+            <li><a href="/about">אודות הלהקה</a></li>
+            <li><a href="/contact">צור קשר</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Contact -->
+        <div class="footer-col">
+          <h3 class="footer-heading">יצירת קשר</h3>
+          <ul class="footer-contact">
+            <li>
+              <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+              <span class="contact-text"><a href="mailto:[business_email]">[business_email]</a></span>
+            </li>
+            <li>
+              <span class="contact-icon"><i class="fas fa-phone"></i></span>
+              <span class="contact-text"><a href="tel:[business_phone]">[business_phone]</a></span>
+            </li>
+            <li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+              <span class="contact-text">[business_address]</span></a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Decorative / Brand Quote -->
+        <div class="footer-col footer-col--quote">
+          <div class="footer-quote-block">
+            <span class="footer-quote-mark">“</span>
+            <p class="footer-quote-text">כל שיר הוא פרק בסיפור שלנו — מוזמנים להקשיב.</p>
+            <span class="footer-accent-line"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <div class="footer-container footer-bottom-inner">
+      <p class="footer-copyright">© 2026 שירי השיר שלנו. כל הזכויות שמורות.</p>
+      <div class="footer-legal">
+        <a href="/privacy">מדיניות פרטיות</a>
+        <span class="footer-sep"></span>
+        <a href="/terms">תנאי שימוש</a>
+        <span class="footer-sep"></span>
+        <a href="/accessibility">נגישות</a>
+        <span class="footer-sep"></span>
+        <a href="https://zappy5.com" target="_blank" class="zappy-attribution">נוצר באמצעות Zappy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+
+    <script id="zappy-navbar-scroll-effect">
+    (function(){
+      var nb=document.querySelector('nav.navbar,.navbar:not(.zappy-catalog-menu)');
+      var cm=document.querySelector('.zappy-catalog-menu,#zappy-catalog-menu');
+      if(!nb)return;
+      var fb='rgba(26,30,35,0.85)';
+      var th=60;
+      var rs=getComputedStyle(document.documentElement);
+      var td=rs.getPropertyValue('--text-dark').trim()||'#1a1a1a';
+      var tl=rs.getPropertyValue('--text-light').trim()||'#ffffff';
+      var st=false?td:tl;
+      nb.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease,box-shadow 0.3s ease';
+      if(cm)cm.style.transition='background 0.3s ease,backdrop-filter 0.3s ease,-webkit-backdrop-filter 0.3s ease';
+      var neSel='a,.navbar-brand,.navbar-brand a,.dropdown-toggle,.mobile-toggle,.phone-header-btn,.mobile-hamburger-btn,.mobile-close-btn,.mobile-submenu-toggle,.nav-link';
+      var skipCls=['cart-link','login-link','nav-search-toggle','search-toggle'];
+      function sTC(c,clr){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){var sk=false;if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu')){sk=true;}for(var j=0;j<skipCls.length;j++){if(els[i].classList.contains(skipCls[j])){sk=true;break;}}if(!sk)els[i].style.setProperty('color',clr,'important');}}
+      function cTC(c){var els=c.querySelectorAll(neSel);for(var i=0;i<els.length;i++){if(els[i].closest('.sub-menu')||els[i].closest('.dropdown-menu'))continue;els[i].style.removeProperty('color');}}
+      function applyScrolled(){
+        nb.classList.add('scrolled');
+        if(window.innerWidth>768){
+          nb.style.setProperty('--frosted-text',st);
+          nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('background-color',fb,'important');
+          nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+        }
+        if(cm){cm.classList.add('scrolled');if(window.innerWidth>768){cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}}
+      }
+      function onS(){
+        if(window._zappyNavNoDarkHero) return;
+        if(window.innerWidth<=768){nb.classList.remove('scrolled');cTC(nb);if(cm){cm.classList.remove('scrolled');cTC(cm);}return;}
+        var y=window.scrollY||window.pageYOffset;
+        if(y>th){
+          nb.classList.add('scrolled');nb.style.setProperty('background-color',fb,'important');nb.style.setProperty('background-image','none','important');
+          nb.style.setProperty('--frosted-text',st);nb.style.backdropFilter='blur(12px)';nb.style.webkitBackdropFilter='blur(12px)';nb.style.boxShadow='0 2px 16px rgba(0,0,0,0.12)';
+          sTC(nb,st);
+          if(cm){cm.classList.add('scrolled');cm.style.setProperty('background',fb,'important');cm.style.setProperty('backdrop-filter','blur(12px)','important');cm.style.setProperty('-webkit-backdrop-filter','blur(12px)','important');sTC(cm,st);}
+        }else{
+          nb.classList.remove('scrolled');nb.style.setProperty('background-color','transparent','important');nb.style.removeProperty('background-image');
+          nb.style.removeProperty('--frosted-text');nb.style.backdropFilter='none';nb.style.webkitBackdropFilter='none';nb.style.boxShadow='none';
+          cTC(nb);
+          if(cm){cm.classList.remove('scrolled');cm.style.setProperty('background','transparent','important');cm.style.setProperty('backdrop-filter','none','important');cm.style.setProperty('-webkit-backdrop-filter','none','important');cTC(cm);}
+        }
+      }
+      function sLum(rv,gv,bv){rv/=255;gv/=255;bv/=255;rv=rv<=0.03928?rv/12.92:Math.pow((rv+0.055)/1.055,2.4);gv=gv<=0.03928?gv/12.92:Math.pow((gv+0.055)/1.055,2.4);bv=bv<=0.03928?bv/12.92:Math.pow((bv+0.055)/1.055,2.4);return 0.2126*rv+0.7152*gv+0.0722*bv;}
+      window.addEventListener('scroll',onS,{passive:true});
+      window.addEventListener('resize',onS,{passive:true});
+      onS();
+      var heroEl=document.querySelector('section[class*="hero"],[data-hero-type],main>section:first-child');
+      var hasDH=false;
+      if(heroEl){var hCs=getComputedStyle(heroEl);var hBI=hCs.backgroundImage;if(hBI&&hBI!=='none'){if(hBI.indexOf('url(')!==-1){var hM2=hCs.backgroundColor.match(/\d+/g);if(hM2&&hM2.length>=3){hasDH=sLum(parseInt(hM2[0]),parseInt(hM2[1]),parseInt(hM2[2]))<0.4;}else{hasDH=true;}}else if(hBI.indexOf('gradient')!==-1){var cM=hBI.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g);if(cM&&cM.length>0){var tLm=0;for(var ci=0;ci<cM.length;ci++){var pts=cM[ci].match(/\d+/g);tLm+=sLum(parseInt(pts[0]),parseInt(pts[1]),parseInt(pts[2]));}hasDH=(tLm/cM.length)<0.4;}else{hasDH=true;}}else{hasDH=true;}}else{var hM=hCs.backgroundColor.match(/\d+/g);if(hM&&hM.length>=3){hasDH=sLum(parseInt(hM[0]),parseInt(hM[1]),parseInt(hM[2]))<0.4;}}}
+      if(!hasDH){window.removeEventListener('scroll',onS);window.removeEventListener('resize',onS);applyScrolled();window._zappyNavNoDarkHero=true;}
+    })();
+    </script>
+</body>
+</html>
